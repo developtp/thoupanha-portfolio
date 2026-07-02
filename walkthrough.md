@@ -73,7 +73,7 @@ To host this on AWS, we will deploy the Node.js backend to an **AWS EC2 Instance
 
 > [!WARNING]
 > Make sure your frontend API calls point to your AWS backend URL, not `http://localhost:5000`.
-> In `frontend/src/pages/Admin.jsx`, `frontend/src/pages/Home.jsx`, `frontend/src/components/ProjectsList.jsx`, and `frontend/src/components/ContactForm.jsx`, set the API base URL to `http://54.87.22.27:5000/api`.
+> In `frontend/src/pages/Admin.jsx`, `frontend/src/pages/Home.jsx`, `frontend/src/components/ProjectsList.jsx`, and `frontend/src/components/ContactForm.jsx`, set the API base URL to `http://54.226.255.19:5000/api`.
 
 ### Step A: Deploy the Backend to AWS EC2
 1. Log into the AWS Management Console and go to **EC2**.
