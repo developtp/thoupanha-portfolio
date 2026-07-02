@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TECH_PRESETS, getTechIcon } from '../utils/techIcons';
-
-const API_URL = 'http://54.226.255.19:5000/api';
+import { API_URL } from '../config/api';
 
 const GitHubIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { TECH_PRESETS, getTechIcon } from '../utils/techIcons';
-
-const API_URL = 'http://54.226.255.19:5000/api';
+import { API_URL } from '../config/api';
 
 const GitHubIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ display: 'block' }}>

@@ -3,8 +3,7 @@ import Navbar from '../components/Navbar';
 import ProjectsList from '../components/ProjectsList';
 import ContactForm from '../components/ContactForm';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-
-const API_URL = 'http://54.226.255.19:5000/api';
+import { API_URL } from '../config/api';
 
 const RevealWrapper = ({ children, delay = 0, className = '' }) => {
   const { ref, isRevealed } = useScrollReveal();
