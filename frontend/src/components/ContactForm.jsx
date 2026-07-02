@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://54.87.22.27:5000/api';
 
 // SVG icons used by the social link buttons.
 const GitHubIcon = () => (

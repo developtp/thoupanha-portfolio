@@ -72,8 +72,8 @@ This perfectly demonstrates the requirement for "at least one complete CRUD feat
 To host this on AWS, we will deploy the Node.js backend to an **AWS EC2 Instance** (Elastic Compute Cloud) and host the React frontend on a simpler static host like **AWS Amplify**. 
 
 > [!WARNING]
-> Make sure your frontend API calls point to your AWS backend URL, not `http://localhost:5000`. 
-> In `frontend/src/pages/Admin.jsx`, `frontend/src/components/ProjectsList.jsx`, and `frontend/src/components/ContactForm.jsx`, change `http://localhost:5000/api` to your AWS EC2 IP address (e.g., `http://YOUR-EC2-IP:5000/api`). 
+> Make sure your frontend API calls point to your AWS backend URL, not `http://localhost:5000`.
+> In `frontend/src/pages/Admin.jsx`, `frontend/src/pages/Home.jsx`, `frontend/src/components/ProjectsList.jsx`, and `frontend/src/components/ContactForm.jsx`, set the API base URL to `http://54.87.22.27:5000/api`.
 
 ### Step A: Deploy the Backend to AWS EC2
 1. Log into the AWS Management Console and go to **EC2**.

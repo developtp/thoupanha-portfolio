@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { TECH_PRESETS, getTechIcon } from '../utils/techIcons';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://54.87.22.27:5000/api';
 
 const GitHubIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ display: 'block' }}>
