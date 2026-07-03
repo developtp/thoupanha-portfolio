@@ -18,7 +18,14 @@ To ensure your app works both locally and on AWS, we will use MongoDB Atlas.
    `mongodb+srv://<username>:<password>@cluster0.mongodb.net/portfolio?retryWrites=true&w=majority`
 
 ### 2. Configure Local Environment Variables
-In your local repository, navigate to the `backend/` directory and update the `.env` file with the MongoDB Atlas string you just copied.
+In your local repository, navigate to the `backend/` directory and copy the committed example file to your private local env file.
+
+```bash
+cd backend
+copy .env.example .env.local
+```
+
+Then open `backend/.env.local` and replace the placeholder MongoDB string with your real Atlas connection string.
 
 ```env
 PORT=5000
@@ -72,8 +79,8 @@ This perfectly demonstrates the requirement for "at least one complete CRUD feat
 To host this on AWS, we will deploy the Node.js backend to an **AWS EC2 Instance** (Elastic Compute Cloud) and host the React frontend on a simpler static host like **AWS Amplify**. 
 
 > [!WARNING]
-> Make sure your frontend API calls point to your AWS backend URL, not `http://localhost:5000`.
-> In `frontend/src/pages/Admin.jsx`, `frontend/src/pages/Home.jsx`, `frontend/src/components/ProjectsList.jsx`, and `frontend/src/components/ContactForm.jsx`, set the API base URL to `http://54.226.255.19:5000/api`.
+> The frontend now defaults to same-origin `/api` and uses the Vite dev proxy for local development.
+> Only set `frontend/.env.local` with a full API origin if your production deployment does not expose `/api` on the same site.
 
 ### Step A: Deploy the Backend to AWS EC2
 1. Log into the AWS Management Console and go to **EC2**.
@@ -98,11 +105,11 @@ To host this on AWS, we will deploy the Node.js backend to an **AWS EC2 Instance
    cd your-repo-name/backend
    npm install
    ```
-4. Create your `.env` file on the server:
+4. Create your private backend env file on the server:
    ```bash
-   nano .env
+   cp .env.example .env.local
    ```
-   *Paste your `MONGO_URI` and `PORT=5000`, then press `CTRL+X`, `Y`, and `Enter`.*
+   *Paste your real `MONGO_URI` into `backend/.env.local`, then save the file.*
 5. Keep the server running forever using PM2:
    ```bash
    sudo npm install -g pm2
@@ -118,7 +125,7 @@ To host this on AWS, we will deploy the Node.js backend to an **AWS EC2 Instance
 ### Step B: Deploy the Frontend to AWS Amplify
 AWS Amplify makes deploying React apps incredibly easy.
 
-1. Ensure your React code (with the API URLs updated to your EC2 Public IP) is pushed to GitHub.
+1. Ensure your React code is pushed to GitHub.
 2. In the AWS Console, search for **AWS Amplify**.
 3. Click **New App -> Host web app**.
 4. Select **GitHub** and authorize AWS to access your repositories.
@@ -126,6 +133,8 @@ AWS Amplify makes deploying React apps incredibly easy.
 6. Check the box indicating your app is in a monorepo, and set the root directory to `frontend`.
 7. Click **Next**, then **Save and Deploy**.
 8. AWS Amplify will build your Vite React app and provide you with a live, public `.amplifyapp.com` URL.
+
+If your frontend and backend are on separate origins in production, set `VITE_API_URL` in the frontend build environment before running `vite build`. If they are served through the same site, leave it unset and let the app use `/api`.
 
 ---
 
