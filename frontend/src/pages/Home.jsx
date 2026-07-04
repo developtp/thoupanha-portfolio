@@ -25,8 +25,8 @@ const Home = () => {
   const [facts, setFacts] = useState([]);
   const [profile, setProfile] = useState({
     heroTitle: "Hi, I'm <span class=\"highlight\">Thou Panha</span>",
-    heroSubtitle: "A Software Engineering Student & Full-Stack Developer",
-    bioIntro: "I am passionate about building modern, responsive, and scalable web applications. My core stack includes React, Node.js, Express, and MongoDB."
+    heroSubtitle: "A Software Engineering Student",
+    bioIntro: "I am just a software engineering student who likes to play video games, watch movies, and learn new things. "
   });
   
   // Easter egg states
