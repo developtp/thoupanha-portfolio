@@ -16,8 +16,26 @@ const Profile     = require('./models/Profile');
 const app  = express();
 const PORT = process.env.PORT || 5000;
 
-// Express middleware.
-app.use(cors());
+// CORS — allow origins listed in ALLOWED_ORIGINS (comma-separated).
+// Leave ALLOWED_ORIGINS unset or empty to allow all origins (dev/testing only).
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow server-to-server requests (no Origin header) and same-origin fetches.
+    if (!origin) return callback(null, true);
+    // Allow everything when no restrictions are configured.
+    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS: origin ${origin} is not allowed`));
+  },
+  credentials: true,
+}));
+
 app.use(express.json());
 
 // Connect to MongoDB.
