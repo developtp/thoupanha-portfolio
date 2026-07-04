@@ -34,7 +34,6 @@ const corsOptions = allowedOrigins.length > 0
 
 // Express middleware.
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB.
