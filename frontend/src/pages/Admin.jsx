@@ -20,7 +20,6 @@ const Admin = () => {
     repoLink: ''
   });
   const [editingProjId, setEditingProjId] = useState(null);
-  const [dragActive, setDragActive]       = useState(false);
 
   const [facts, setFacts]               = useState([]);
   const [factForm, setFactForm]         = useState({ icon: '', headline: '', description: '' });
@@ -147,34 +146,6 @@ const Admin = () => {
 
   const handleProjChange = (e) => setProjForm({ ...projForm, [e.target.name]: e.target.value });
 
-  const processImageFile = (file) => {
-    if (file.size > 3 * 1024 * 1024) { alert('File size exceeds 3MB limit.'); return; }
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      alert('Invalid file type. Please upload a JPG, PNG, or WEBP image.');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onloadend = () => setProjForm(prev => ({ ...prev, imageUrl: reader.result }));
-    reader.readAsDataURL(file);
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files?.[0]) processImageFile(e.target.files[0]);
-  };
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(e.type === 'dragenter' || e.type === 'dragover');
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files?.[0]) processImageFile(e.dataTransfer.files[0]);
-  };
-
   const handleTechToggle = (techId) => {
     const isSelected = projForm.techStack.includes(techId);
     const newTechStack = isSelected
@@ -184,8 +155,9 @@ const Admin = () => {
   };
 
   const isFormValid = () => {
-    if (!projForm.title.trim() || !projForm.description.trim() || !projForm.imageUrl) return false;
+    if (!projForm.title.trim() || !projForm.description.trim()) return false;
     const urlPattern = /^https?:\/\/.+/;
+    if (projForm.imageUrl && !urlPattern.test(projForm.imageUrl)) return false;
     if (projForm.link && !urlPattern.test(projForm.link)) return false;
     if (projForm.repoLink && !urlPattern.test(projForm.repoLink)) return false;
     return true;
@@ -347,15 +319,6 @@ const Admin = () => {
     );
   }
 
-  // ── Live Preview Computations ─────────────────────────────────────────────
-
-  const previewTitle    = projForm.title.trim()       || 'Ghost Task Manager App';
-  const previewCategory = projForm.category.trim()    || 'Full Stack Project';
-  const previewDesc     = projForm.description.trim() || 'Provide a compelling description of what this application does, its core capabilities, and which engineering paradigms it satisfies.';
-  const previewNumber   = editingProjId
-    ? (projects.findIndex(p => p._id === editingProjId) + 1).toString().padStart(2, '0')
-    : (projects.length + 1).toString().padStart(2, '0');
-
   // ── Dashboard ─────────────────────────────────────────────────────────────
 
   return (
@@ -513,29 +476,19 @@ const Admin = () => {
             </fieldset>
 
             <fieldset className="form-section">
-              <legend>Project Image *</legend>
-              <div
-                className={`drag-drop-area ${dragActive ? 'drag-active' : ''} ${projForm.imageUrl ? 'has-preview' : ''}`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-              >
-                {projForm.imageUrl ? (
-                  <div className="upload-preview-container">
-                    <img src={projForm.imageUrl} alt="Preview of uploaded screenshot" className="upload-preview-thumb" />
-                    <label htmlFor="proj-file-replace" className="btn-secondary upload-replace-btn">Replace Image</label>
-                    <input id="proj-file-replace" type="file" accept="image/png, image/jpeg, image/webp" onChange={handleFileChange} className="sr-only" />
-                  </div>
-                ) : (
-                  <div className="drag-drop-prompt">
-                    <p>Drag and drop your screenshot here, or</p>
-                    <label htmlFor="proj-file" className="btn-secondary">Browse files</label>
-                    <input id="proj-file" type="file" accept="image/png, image/jpeg, image/webp" onChange={handleFileChange} className="sr-only" />
-                    <small className="upload-limit-info">JPG, PNG, or WEBP (Max 3MB)</small>
-                  </div>
-                )}
-              </div>
+              <legend>Project Image</legend>
+              <label htmlFor="proj-image-url">Image URL (optional)</label>
+              <input
+                id="proj-image-url"
+                type="url"
+                name="imageUrl"
+                placeholder="https://example.com/screenshot.png"
+                value={projForm.imageUrl}
+                onChange={handleProjChange}
+              />
+              {projForm.imageUrl && !/^https?:\/\/.+/.test(projForm.imageUrl) && (
+                <span className="error-text" style={{ marginBottom: '1rem' }}>URL must start with http:// or https://</span>
+              )}
             </fieldset>
 
             <fieldset className="form-section">
@@ -622,67 +575,18 @@ const Admin = () => {
         </div>
 
         <div className="admin-right">
-          <h2>Live Project Card Preview</h2>
-          <div className="preview-pane-sticky" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            <div className="project-card active">
-              <div className="project-image-wrapper">
-                <span className="project-number">{previewNumber}</span>
-                {projForm.imageUrl
-                  ? <img src={projForm.imageUrl} alt={`Preview of card for ${previewTitle}`} className="project-image" />
-                  : <div className="project-image-placeholder">Choose/drag a screenshot to preview image</div>
-                }
-              </div>
-              <div className="project-info">
-                <span className="project-category">{previewCategory}</span>
-                <h3 style={{ margin: '0.5rem 0' }}>{previewTitle}</h3>
-                <p className="project-desc">{previewDesc}</p>
-
-                {projForm.techStack.length > 0 && (
-                  <div className="tech-pills">
-                    {projForm.techStack.map(techId => {
-                      const found = TECH_PRESETS.find(p => p.id === techId);
-                      return (
-                        <span key={techId} className="tech-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <span style={{ color: found?.color ?? '#fff', display: 'inline-flex', alignItems: 'center' }}>
-                            {getTechIcon(techId, 12)}
-                          </span>
-                          {found?.name ?? techId}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-
-                <div className="preview-buttons-row" style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
-                  {projForm.repoLink && (
-                    <a href={projForm.repoLink} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '8px 12px', fontSize: '0.85rem' }}>
-                      GitHub
-                    </a>
-                  )}
-                  {projForm.link && (
-                    <a href={projForm.link} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '8px 12px', fontSize: '0.85rem' }}>
-                      Live Demo
-                    </a>
-                  )}
+          <h2>List of Projects</h2>
+          <div className="admin-projects">
+            {projects.length === 0 && <p>No projects added yet.</p>}
+            {projects.map(p => (
+              <div key={p._id} className="admin-project-card">
+                <h3 style={{ fontSize: '0.95rem' }}>{p.title}</h3>
+                <div className="admin-actions">
+                  <button onClick={() => handleProjEdit(p)} className="btn-edit">Edit</button>
+                  <button onClick={() => handleProjDelete(p._id)} className="btn-delete">Delete</button>
                 </div>
               </div>
-            </div>
-
-            <div>
-              <h2>List of Projects</h2>
-              <div className="admin-projects" style={{ maxHeight: '350px', overflowY: 'auto' }}>
-                {projects.length === 0 && <p>No projects added yet.</p>}
-                {projects.map(p => (
-                  <div key={p._id} className="admin-project-card">
-                    <h3 style={{ fontSize: '0.95rem' }}>{p.title}</h3>
-                    <div className="admin-actions">
-                      <button onClick={() => handleProjEdit(p)} className="btn-edit">Edit</button>
-                      <button onClick={() => handleProjDelete(p._id)} className="btn-delete">Delete</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
