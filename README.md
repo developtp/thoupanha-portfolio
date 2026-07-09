@@ -158,26 +158,33 @@ Local URL: `http://localhost:5000`
 # Screenshots
 
 [Homepage Screenshot]
+<img width="3151" height="1643" alt="Screenshot 2026-07-09 211931" src="https://github.com/user-attachments/assets/1f312f06-ce6d-4663-a896-2d5a8e7722cb" />
+
 
 [Projects Section Screenshot]
+<img width="3142" height="1651" alt="Screenshot 2026-07-09 211958" src="https://github.com/user-attachments/assets/7ca262ef-4763-4ee0-a6c9-57d2edef90a8" />
+
 
 [Admin Dashboard Screenshot]
+<img width="3144" height="1657" alt="Screenshot 2026-07-09 213329" src="https://github.com/user-attachments/assets/c79b14a7-d4fc-434f-906a-4506a2d18e35" />
+
 
 [Contact Form Screenshot]
+<img width="3141" height="1654" alt="Screenshot 2026-07-09 212015" src="https://github.com/user-attachments/assets/5ada7f44-5f40-4be8-ae21-e23fd80fa9b5" />
+
 
 # Live Website
 
-<live-website-url>
+<[live-website-url](https://test1.dz873eas4giaf.amplifyapp.com/)>
 
 # GitHub Repository
 
-<github-repository-url>
+<[github-repo-branch-test1](https://github.com/developtp/thoupanha-portfolio)>
 
 # Known Limitations
 
 - The admin dashboard uses a shared PIN instead of user accounts with passwords.
 - No direct image file upload support; images need to be base64 strings or external links.
-- No pagination for lists.
 
 # Future Improvements
 
@@ -188,6 +195,6 @@ Local URL: `http://localhost:5000`
 
 # Author
 
-Name: <name>
-GitHub: <github>
-Email: <email>
+Name: <Thou Panha>
+GitHub: <github.com/developtp>
+Email: <pt6025010093@camtech.edu.kh>
